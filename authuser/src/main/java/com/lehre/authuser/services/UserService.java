@@ -1,3 +1,9 @@
 package com.lehre.authuser.services;
 
-public interface UserService {}
+import com.lehre.authuser.models.UserModel;
+
+import java.util.List;
+
+public interface UserService {
+  List<UserModel> findAll();
+}
