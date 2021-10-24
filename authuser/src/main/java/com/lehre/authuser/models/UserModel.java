@@ -5,10 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.lehre.authuser.enums.UserStatus;
 import com.lehre.authuser.enums.UserType;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.hibernate.Hibernate;
 
 import javax.persistence.*;
@@ -17,6 +14,7 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 import java.util.UUID;
 
+@Builder
 @Entity
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
@@ -56,7 +54,7 @@ public class UserModel implements Serializable {
   private String phoneNumber;
 
   @Column(length = 32)
-  private String documentNumber;
+  private String cpf;
 
   private String imageUrl;
 
