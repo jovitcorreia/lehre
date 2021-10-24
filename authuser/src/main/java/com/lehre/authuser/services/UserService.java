@@ -1,2 +1,3 @@
-package com.lehre.authuser.services;public interface UserService {
-}
+package com.lehre.authuser.services;
+
+public interface UserService {}
