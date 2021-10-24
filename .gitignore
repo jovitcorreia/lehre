@@ -1,0 +1,16 @@
+*.class
+.mtj.tmp/
+*.jar
+*.war
+*.ear
+target/
+**/.project
+**/.classpath
+**/.settings/
+blog/bin/
+**/.tern-project
+**/*.iml
+**/.idea
+**/.gradle
+hs_err_pid*
+database/
