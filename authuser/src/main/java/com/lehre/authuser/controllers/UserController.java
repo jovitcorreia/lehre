@@ -3,6 +3,7 @@ package com.lehre.authuser.controllers;
 import com.lehre.authuser.models.UserModel;
 import com.lehre.authuser.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,23 +26,26 @@ public class UserController {
   public ResponseEntity<?> deleteUserById(@PathVariable UUID id) {
     Optional<UserModel> userModelOptional = userService.findById(id);
     if (userModelOptional.isEmpty()) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(String.format("User with id %s not found!", id));
     }
     userService.delete(userModelOptional.get());
-    return ResponseEntity.ok(String.format("User with id %s deleted successfully", id));
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(String.format("User with id %s deleted successfully", id));
   }
 
   @GetMapping
   public ResponseEntity<List<UserModel>> getAllUsers() {
-    return ResponseEntity.ok(userService.findAll());
+    return ResponseEntity.status(HttpStatus.OK).body(userService.findAll());
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<UserModel> getUserById(@PathVariable UUID id) {
+  public ResponseEntity<?> getUserById(@PathVariable UUID id) {
     Optional<UserModel> userModelOptional = userService.findById(id);
     if (userModelOptional.isEmpty()) {
-      return ResponseEntity.notFound().build();
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(String.format("User with id %s not found!", id));
     }
-    return ResponseEntity.ok(userModelOptional.get());
+    return ResponseEntity.status(HttpStatus.OK).body(userModelOptional.get());
   }
 }

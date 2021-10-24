@@ -38,4 +38,14 @@ public class UserServiceImpl implements UserService {
   public void save(UserModel userModel) {
     userRepository.save(userModel);
   }
+
+  @Override
+  public boolean existsByEmail(String email) {
+    return userRepository.existsByEmail(email);
+  }
+
+  @Override
+  public boolean existsByUsername(String username) {
+    return userRepository.existsByUsername(username);
+  }
 }

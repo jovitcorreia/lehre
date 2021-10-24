@@ -5,10 +5,11 @@ import com.lehre.authuser.mappers.UserMapper;
 import com.lehre.authuser.models.UserModel;
 import com.lehre.authuser.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.net.URI;
+import javax.transaction.Transactional;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -22,10 +23,14 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<UserModel> registerUser(@RequestBody UserSummary userSummary) {
-    UserModel userModel = UserMapper.newStudent(userSummary);
+  public ResponseEntity<?> registerUser(@RequestBody UserSummary userSummary) {
+    if (userService.existsByUsername(userSummary.getUsername())) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).body("Username is already taken!");
+    } else if (userService.existsByEmail(userSummary.getEmail())) {
+      return ResponseEntity.status(HttpStatus.CONFLICT).body(("Email is already taken!"));
+    }
+    UserModel userModel = UserMapper.newUser(userSummary);
     userService.save(userModel);
-    URI location = URI.create(String.format("/users/%s", userSummary.getId()));
-    return ResponseEntity.created(location).build();
+    return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
   }
 }

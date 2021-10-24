@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 
 public class UserMapper {
-  public static UserModel newStudent(UserSummary userSummary) {
+  public static UserModel newUser(UserSummary userSummary) {
     return UserModel.builder()
         .username(userSummary.getUsername())
         .email(userSummary.getEmail())

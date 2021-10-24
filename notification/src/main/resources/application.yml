@@ -3,8 +3,8 @@ server:
 
 spring:
   datasource:
-    url: jdbc:mariadb://localhost:3306/notification
-    username: root
+    url: jdbc:postgresql://localhost:5432/authuser
+    username: postgres
     password: lehre
   jpa:
     hibernate:
