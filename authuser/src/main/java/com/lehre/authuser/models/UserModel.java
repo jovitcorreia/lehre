@@ -54,7 +54,7 @@ public class UserModel implements Serializable {
   @Column(length = 32)
   private String phoneNumber;
 
-  @Column(length = 32)
+  @Column(length = 11)
   private String cpf;
 
   private String imageUrl;
@@ -77,6 +77,6 @@ public class UserModel implements Serializable {
 
   @Override
   public int hashCode() {
-    return 0;
+    return Objects.hash(id, username, email);
   }
 }
