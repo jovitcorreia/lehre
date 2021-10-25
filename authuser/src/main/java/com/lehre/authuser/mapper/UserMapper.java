@@ -1,8 +1,8 @@
 package com.lehre.authuser.mapper;
 
-import com.lehre.authuser.data.UserData;
 import com.lehre.authuser.constant.UserStatus;
 import com.lehre.authuser.constant.UserType;
+import com.lehre.authuser.data.UserData;
 import com.lehre.authuser.model.UserModel;
 
 import java.time.LocalDateTime;
