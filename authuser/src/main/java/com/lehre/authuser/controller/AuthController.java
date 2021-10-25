@@ -1,7 +1,7 @@
 package com.lehre.authuser.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lehre.authuser.dto.UserData;
+import com.lehre.authuser.data.UserData;
 import com.lehre.authuser.mapper.UserMapper;
 import com.lehre.authuser.model.UserModel;
 import com.lehre.authuser.service.UserService;

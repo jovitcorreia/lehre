@@ -1,4 +1,4 @@
-package com.lehre.authuser.dto;
+package com.lehre.authuser.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
