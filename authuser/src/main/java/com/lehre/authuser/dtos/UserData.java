@@ -3,7 +3,7 @@ package com.lehre.authuser.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
-import validations.UsernameConstraint;
+import com.lehre.authuser.validations.UsernameConstraint;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
