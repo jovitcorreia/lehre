@@ -1,7 +1,7 @@
 package com.lehre.authuser.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lehre.authuser.dto.UserData;
+import com.lehre.authuser.data.UserData;
 import com.lehre.authuser.model.UserModel;
 import com.lehre.authuser.service.UserService;
 import com.lehre.authuser.spec.SpecTemplate;
@@ -20,6 +20,9 @@ import java.time.ZoneId;
 import java.util.Optional;
 import java.util.UUID;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/users")
@@ -32,8 +35,8 @@ public class UserController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteUserById(@PathVariable UUID id) {
-    Optional<UserModel> userModelOptional = userService.findById(id);
+  public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
+    Optional<UserModel> userModelOptional = userService.find(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
@@ -47,12 +50,19 @@ public class UserController {
   public ResponseEntity<Page<UserModel>> getAllUsers(
       SpecTemplate.UserSpec spec,
       @PageableDefault(sort = "creationDate", direction = Sort.Direction.ASC) Pageable pageable) {
-    return ResponseEntity.status(HttpStatus.OK).body(userService.findAll(spec, pageable));
+    Page<UserModel> userModelPage = userService.findAll(spec, pageable);
+    if (!userModelPage.isEmpty()) {
+      for (UserModel user : userModelPage.toList()) {
+        user.add(linkTo(methodOn(UserController.class).getUser(user.getId())).withSelfRel());
+        System.out.println(user);
+      }
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
   }
 
   @GetMapping("/{id}")
-  public ResponseEntity<?> getUserById(@PathVariable UUID id) {
-    Optional<UserModel> userModelOptional = userService.findById(id);
+  public ResponseEntity<?> getUser(@PathVariable UUID id) {
+    Optional<UserModel> userModelOptional = userService.find(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
@@ -67,7 +77,7 @@ public class UserController {
           @Validated(UserData.UserView.GenericPut.class)
           @JsonView(UserData.UserView.GenericPut.class)
           UserData userData) {
-    Optional<UserModel> userModelOptional = userService.findById(id);
+    Optional<UserModel> userModelOptional = userService.find(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
@@ -88,7 +98,7 @@ public class UserController {
           @Validated(UserData.UserView.PasswordPut.class)
           @JsonView(UserData.UserView.PasswordPut.class)
           UserData userData) {
-    Optional<UserModel> userModelOptional = userService.findById(id);
+    Optional<UserModel> userModelOptional = userService.find(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
@@ -110,7 +120,7 @@ public class UserController {
           @Validated(UserData.UserView.ImagePut.class)
           @JsonView(UserData.UserView.ImagePut.class)
           UserData userData) {
-    Optional<UserModel> userModelOptional = userService.findById(id);
+    Optional<UserModel> userModelOptional = userService.find(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));

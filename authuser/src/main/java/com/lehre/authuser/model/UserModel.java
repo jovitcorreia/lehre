@@ -7,6 +7,7 @@ import com.lehre.authuser.constant.UserStatus;
 import com.lehre.authuser.constant.UserType;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Table(name = "TB_USERS")
 @ToString
-public class UserModel implements Serializable {
+public class UserModel extends RepresentationModel<UserModel> implements Serializable {
   private static final long serialVersionUID = 1L;
 
   @Id
