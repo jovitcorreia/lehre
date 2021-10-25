@@ -8,6 +8,7 @@ import com.lehre.authuser.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
@@ -23,7 +24,10 @@ public class AuthController {
 
   @PostMapping("/signup")
   public ResponseEntity<?> registerUser(
-      @RequestBody @JsonView(UserData.UserView.RegistrationPost.class) UserData userData) {
+      @RequestBody
+          @Validated(UserData.UserView.RegistrationPost.class)
+          @JsonView(UserData.UserView.RegistrationPost.class)
+          UserData userData) {
     if (userService.existsByUsername(userData.getUsername())) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body("Username is already taken!");
     } else if (userService.existsByEmail(userData.getEmail())) {

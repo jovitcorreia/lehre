@@ -19,7 +19,7 @@ public class UserData {
   @Size(groups = UserView.RegistrationPost.class, min = 3, max = 32)
   private String username;
 
-  @Email
+  @Email(groups = UserView.RegistrationPost.class)
   @JsonView(UserView.RegistrationPost.class)
   @NotBlank(groups = UserView.RegistrationPost.class)
   private String email;
