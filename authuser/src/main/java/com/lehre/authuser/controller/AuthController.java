@@ -36,7 +36,7 @@ public class AuthController {
     } else if (userService.existsByEmail(userData.getEmail())) {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(("Email is already taken!"));
     }
-    UserModel userModel = UserMapper.newUser(userData);
+    UserModel userModel = new UserMapper().from(userData);
     userService.save(userModel);
     userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
