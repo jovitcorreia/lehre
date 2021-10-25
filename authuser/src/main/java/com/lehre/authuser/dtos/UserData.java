@@ -3,6 +3,7 @@ package com.lehre.authuser.dtos;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
+import validations.UsernameConstraint;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -17,6 +18,7 @@ public class UserData {
   @JsonView(UserView.RegistrationPost.class)
   @NotBlank(groups = UserView.RegistrationPost.class)
   @Size(groups = UserView.RegistrationPost.class, min = 3, max = 32)
+  @UsernameConstraint(groups = UserData.UserView.RegistrationPost.class)
   private String username;
 
   @Email(groups = UserView.RegistrationPost.class)
