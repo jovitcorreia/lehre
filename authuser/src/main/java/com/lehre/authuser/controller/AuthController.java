@@ -11,6 +11,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
+
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/auth")
@@ -35,6 +38,7 @@ public class AuthController {
     }
     UserModel userModel = UserMapper.newUser(userData);
     userService.save(userModel);
+    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
   }
 }

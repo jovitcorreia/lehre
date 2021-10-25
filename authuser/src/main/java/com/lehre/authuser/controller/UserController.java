@@ -67,7 +67,9 @@ public class UserController {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
     }
-    return ResponseEntity.status(HttpStatus.OK).body(userModelOptional.get());
+    UserModel userModel = userModelOptional.get();
+    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
+    return ResponseEntity.status(HttpStatus.OK).body(userModel);
   }
 
   @PutMapping("/{id}")
@@ -88,6 +90,7 @@ public class UserController {
     userModel.setPhoneNumber(userData.getPhoneNumber());
     userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
     userService.save(userModel);
+    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.OK).body(userModel);
   }
 
@@ -129,6 +132,7 @@ public class UserController {
     userModel.setImageUrl(userData.getImageUrl());
     userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
     userService.save(userModel);
+    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.OK).body(userModel);
   }
 }
