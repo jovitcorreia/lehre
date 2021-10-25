@@ -3,13 +3,14 @@ package com.lehre.authuser.services;
 import com.lehre.authuser.models.UserModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-  Page<UserModel> findAll(Pageable pageable);
+  Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable);
 
   Optional<UserModel> findById(UUID id);
 
