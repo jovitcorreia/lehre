@@ -1,9 +1,9 @@
-package com.lehre.authuser.dtos;
+package com.lehre.authuser.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import lombok.Data;
-import com.lehre.authuser.validations.UsernameConstraint;
+import com.lehre.authuser.validation.UsernameConstraint;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

@@ -1,6 +1,6 @@
-package com.lehre.authuser.specs;
+package com.lehre.authuser.spec;
 
-import com.lehre.authuser.models.UserModel;
+import com.lehre.authuser.model.UserModel;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;

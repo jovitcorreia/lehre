@@ -1,8 +1,8 @@
-package com.lehre.authuser.services.impl;
+package com.lehre.authuser.service.impl;
 
-import com.lehre.authuser.models.UserModel;
-import com.lehre.authuser.repositories.UserRepository;
-import com.lehre.authuser.services.UserService;
+import com.lehre.authuser.model.UserModel;
+import com.lehre.authuser.repository.UserRepository;
+import com.lehre.authuser.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

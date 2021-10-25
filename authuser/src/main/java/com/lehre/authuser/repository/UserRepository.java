@@ -1,6 +1,6 @@
-package com.lehre.authuser.repositories;
+package com.lehre.authuser.repository;
 
-import com.lehre.authuser.models.UserModel;
+import com.lehre.authuser.model.UserModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

@@ -1,9 +1,9 @@
-package com.lehre.authuser.mappers;
+package com.lehre.authuser.mapper;
 
-import com.lehre.authuser.dtos.UserData;
-import com.lehre.authuser.enums.UserStatus;
-import com.lehre.authuser.enums.UserType;
-import com.lehre.authuser.models.UserModel;
+import com.lehre.authuser.dto.UserData;
+import com.lehre.authuser.constant.UserStatus;
+import com.lehre.authuser.constant.UserType;
+import com.lehre.authuser.model.UserModel;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;

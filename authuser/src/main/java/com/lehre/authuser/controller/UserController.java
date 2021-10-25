@@ -1,10 +1,10 @@
-package com.lehre.authuser.controllers;
+package com.lehre.authuser.controller;
 
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lehre.authuser.dtos.UserData;
-import com.lehre.authuser.models.UserModel;
-import com.lehre.authuser.services.UserService;
-import com.lehre.authuser.specs.SpecTemplate;
+import com.lehre.authuser.dto.UserData;
+import com.lehre.authuser.model.UserModel;
+import com.lehre.authuser.service.UserService;
+import com.lehre.authuser.spec.SpecTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

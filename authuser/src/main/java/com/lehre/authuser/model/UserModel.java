@@ -1,10 +1,10 @@
-package com.lehre.authuser.models;
+package com.lehre.authuser.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lehre.authuser.enums.UserStatus;
-import com.lehre.authuser.enums.UserType;
+import com.lehre.authuser.constant.UserStatus;
+import com.lehre.authuser.constant.UserType;
 import lombok.*;
 import org.hibernate.Hibernate;
 

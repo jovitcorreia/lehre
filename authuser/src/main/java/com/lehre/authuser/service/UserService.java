@@ -1,6 +1,6 @@
-package com.lehre.authuser.services;
+package com.lehre.authuser.service;
 
-import com.lehre.authuser.models.UserModel;
+import com.lehre.authuser.model.UserModel;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;

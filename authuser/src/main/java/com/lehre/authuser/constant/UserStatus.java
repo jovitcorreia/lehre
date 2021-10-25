@@ -1,4 +1,4 @@
-package com.lehre.authuser.enums;
+package com.lehre.authuser.constant;
 
 public enum UserStatus {
   ACTIVE,
