@@ -1,13 +1,11 @@
-package com.lehre.authuser.model;
+package com.lehre.course.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lehre.authuser.constant.UserStatus;
-import com.lehre.authuser.constant.UserType;
+import com.lehre.course.constant.CourseLevel;
+import com.lehre.course.constant.CourseStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
-import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -20,43 +18,22 @@ import java.util.UUID;
 @Entity
 @Getter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Setter
 @RequiredArgsConstructor
-@Table(name = "TB_USERS")
+@Setter
+@Table(name = "tb_courses")
 @ToString
-public class UserModel extends RepresentationModel<UserModel> implements Serializable {
-  private static final long serialVersionUID = 1L;
+public class CourseModel implements Serializable {
+  public static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   private UUID id;
 
-  @Column(length = 32, nullable = false, unique = true)
-  private String username;
-
-  @Column(nullable = false, unique = true)
-  private String email;
+  @Column(nullable = false)
+  private String name;
 
   @Column(nullable = false)
-  @JsonIgnore
-  private String password;
-
-  @Column(nullable = false)
-  private String fullName;
-
-  @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private UserStatus status;
-
-  @Column(nullable = false)
-  @Enumerated(EnumType.STRING)
-  private UserType type;
-
-  @Column(length = 32)
-  private String phoneNumber;
-
-  @Column(length = 11)
-  private String cpf;
+  private String description;
 
   private String imageUrl;
 
@@ -68,12 +45,23 @@ public class UserModel extends RepresentationModel<UserModel> implements Seriali
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime lastUpdateDate;
 
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private CourseStatus courseStatus;
+
+  @Column(nullable = false)
+  @Enumerated(EnumType.STRING)
+  private CourseLevel courseLevel;
+
+  @Column(nullable = false)
+  private UUID instructor;
+
   @Override
   public boolean equals(Object object) {
     if (this == object) return true;
     if (object == null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
-    UserModel userModel = (UserModel) object;
-    return id != null && Objects.equals(id, userModel.id);
+    CourseModel courseModel = (CourseModel) object;
+    return id != null && Objects.equals(id, courseModel.id);
   }
 
   @Override

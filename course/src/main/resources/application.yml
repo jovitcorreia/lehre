@@ -1,9 +1,9 @@
 server:
-  port: 8088
+  port: 8082
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/authuser
+    url: jdbc:postgresql://localhost:5432/course
     username: postgres
     password: lehre
   jpa:

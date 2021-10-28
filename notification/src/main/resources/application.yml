@@ -3,7 +3,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/authuser
+    url: jdbc:postgresql://localhost:5432/notification
     username: postgres
     password: lehre
   jpa:
