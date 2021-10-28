@@ -22,7 +22,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @Setter
 @RequiredArgsConstructor
-@Table(name = "TB_USERS")
+@Table(name = "tb_users")
 @ToString
 public class UserModel extends RepresentationModel<UserModel> implements Serializable {
   private static final long serialVersionUID = 1L;

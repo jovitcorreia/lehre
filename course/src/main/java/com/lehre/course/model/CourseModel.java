@@ -7,6 +7,10 @@ import com.lehre.course.constant.CourseLevel;
 import com.lehre.course.constant.CourseStatus;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -49,17 +53,20 @@ public class CourseModel implements Serializable {
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private CourseStatus courseStatus;
+  private CourseStatus status;
 
   @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private CourseLevel courseLevel;
+  private CourseLevel level;
 
   @Column(nullable = false)
   private UUID instructor;
 
+  @Fetch(FetchMode.SUBSELECT)
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @OneToMany(mappedBy = "course")
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
+  @ToString.Exclude
   private Set<ModuleModel> modules;
 
   @Override
