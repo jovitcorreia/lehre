@@ -2,6 +2,7 @@ package com.lehre.course.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.lehre.course.constant.CourseLevel;
 import com.lehre.course.constant.CourseStatus;
 import lombok.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -55,6 +57,10 @@ public class CourseModel implements Serializable {
 
   @Column(nullable = false)
   private UUID instructor;
+
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @OneToMany(mappedBy = "course")
+  private Set<ModuleModel> modules;
 
   @Override
   public boolean equals(Object object) {

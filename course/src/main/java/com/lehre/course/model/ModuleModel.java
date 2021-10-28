@@ -2,6 +2,7 @@ package com.lehre.course.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -9,6 +10,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -35,6 +37,14 @@ public class ModuleModel implements Serializable {
 
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime creationDate;
+
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @ManyToOne(optional = false)
+  private CourseModel course;
+
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @OneToMany(mappedBy = "module")
+  private Set<LessonModel> lessons;
 
   @Override
   public boolean equals(Object object) {
