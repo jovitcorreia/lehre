@@ -26,7 +26,7 @@ public class AuthController {
   }
 
   @PostMapping("/signup")
-  public ResponseEntity<?> registerUser(
+  public ResponseEntity<?> store(
       @RequestBody
           @Validated(UserData.UserView.RegistrationPost.class)
           @JsonView(UserData.UserView.RegistrationPost.class)
@@ -37,8 +37,8 @@ public class AuthController {
       return ResponseEntity.status(HttpStatus.CONFLICT).body(("Email is already taken!"));
     }
     UserModel userModel = new UserMapper().from(userData);
-    userService.save(userModel);
-    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
+    userService.store(userModel);
+    userModel.add(linkTo(methodOn(UserController.class).show(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.CREATED).body(userModel);
   }
 }

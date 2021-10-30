@@ -22,23 +22,23 @@ public class UserServiceImpl implements UserService {
   }
 
   @Override
-  public Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable) {
-    return userRepository.findAll(spec, pageable);
+  public void store(UserModel userModel) {
+    userRepository.save(userModel);
   }
 
   @Override
-  public Optional<UserModel> find(UUID id) {
+  public Optional<UserModel> show(UUID id) {
     return userRepository.findById(id);
+  }
+
+  @Override
+  public Page<UserModel> index(Specification<UserModel> spec, Pageable pageable) {
+    return userRepository.findAll(spec, pageable);
   }
 
   @Override
   public void delete(UserModel userModel) {
     userRepository.delete(userModel);
-  }
-
-  @Override
-  public void save(UserModel userModel) {
-    userRepository.save(userModel);
   }
 
   @Override

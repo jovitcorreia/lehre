@@ -10,15 +10,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-  Page<UserModel> findAll(Specification<UserModel> spec, Pageable pageable);
+  @Transactional
+  void store(UserModel userModel);
 
-  Optional<UserModel> find(UUID id);
+  Optional<UserModel> show(UUID id);
+
+  Page<UserModel> index(Specification<UserModel> spec, Pageable pageable);
 
   @Transactional
   void delete(UserModel userModel);
-
-  @Transactional
-  void save(UserModel userModel);
 
   boolean existsByEmail(String email);
 

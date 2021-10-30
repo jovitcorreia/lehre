@@ -34,42 +34,29 @@ public class UserController {
     this.userService = userService;
   }
 
-  @DeleteMapping("/{id}")
-  public ResponseEntity<?> deleteUser(@PathVariable UUID id) {
-    Optional<UserModel> userModelOptional = userService.find(id);
-    if (userModelOptional.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body(String.format("User with id %s not found!", id));
-    }
-    userService.delete(userModelOptional.get());
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(String.format("User with id %s deleted successfully", id));
-  }
-
-  @GetMapping
-  public ResponseEntity<Page<UserModel>> getAllUsers(
-      SpecTemplate.UserSpec spec,
-      @PageableDefault(sort = "creationDate", direction = Sort.Direction.ASC) Pageable pageable) {
-    Page<UserModel> userModelPage = userService.findAll(spec, pageable);
-    if (!userModelPage.isEmpty()) {
-      for (UserModel user : userModelPage.toList()) {
-        user.add(linkTo(methodOn(UserController.class).getUser(user.getId())).withSelfRel());
-        System.out.println(user);
-      }
-    }
-    return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
-  }
-
   @GetMapping("/{id}")
-  public ResponseEntity<?> getUser(@PathVariable UUID id) {
-    Optional<UserModel> userModelOptional = userService.find(id);
+  public ResponseEntity<?> show(@PathVariable UUID id) {
+    Optional<UserModel> userModelOptional = userService.show(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
     }
     UserModel userModel = userModelOptional.get();
-    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
+    userModel.add(linkTo(methodOn(UserController.class).show(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.OK).body(userModel);
+  }
+
+  @GetMapping
+  public ResponseEntity<Page<UserModel>> index(
+      SpecTemplate.UserSpec spec,
+      @PageableDefault(sort = "creationDate", direction = Sort.Direction.ASC) Pageable pageable) {
+    Page<UserModel> userModelPage = userService.index(spec, pageable);
+    if (!userModelPage.isEmpty()) {
+      for (UserModel user : userModelPage.toList()) {
+        user.add(linkTo(methodOn(UserController.class).show(user.getId())).withSelfRel());
+      }
+    }
+    return ResponseEntity.status(HttpStatus.OK).body(userModelPage);
   }
 
   @PutMapping("/{id}")
@@ -79,7 +66,7 @@ public class UserController {
           @Validated(UserData.UserView.GenericPut.class)
           @JsonView(UserData.UserView.GenericPut.class)
           UserData userData) {
-    Optional<UserModel> userModelOptional = userService.find(id);
+    Optional<UserModel> userModelOptional = userService.show(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
@@ -89,8 +76,8 @@ public class UserController {
     userModel.setFullName(userData.getFullName());
     userModel.setPhoneNumber(userData.getPhoneNumber());
     userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-    userService.save(userModel);
-    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
+    userService.store(userModel);
+    userModel.add(linkTo(methodOn(UserController.class).show(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.OK).body(userModel);
   }
 
@@ -101,7 +88,7 @@ public class UserController {
           @Validated(UserData.UserView.PasswordPut.class)
           @JsonView(UserData.UserView.PasswordPut.class)
           UserData userData) {
-    Optional<UserModel> userModelOptional = userService.find(id);
+    Optional<UserModel> userModelOptional = userService.show(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
@@ -112,7 +99,7 @@ public class UserController {
     }
     userModel.setPassword(userData.getPassword());
     userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-    userService.save(userModel);
+    userService.store(userModel);
     return ResponseEntity.status(HttpStatus.OK).body("Password updated successfully!");
   }
 
@@ -123,7 +110,7 @@ public class UserController {
           @Validated(UserData.UserView.ImagePut.class)
           @JsonView(UserData.UserView.ImagePut.class)
           UserData userData) {
-    Optional<UserModel> userModelOptional = userService.find(id);
+    Optional<UserModel> userModelOptional = userService.show(id);
     if (userModelOptional.isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND)
           .body(String.format("User with id %s not found!", id));
@@ -131,8 +118,20 @@ public class UserController {
     UserModel userModel = userModelOptional.get();
     userModel.setImageUrl(userData.getImageUrl());
     userModel.setLastUpdateDate(LocalDateTime.now(ZoneId.of("UTC")));
-    userService.save(userModel);
-    userModel.add(linkTo(methodOn(UserController.class).getUser(userModel.getId())).withSelfRel());
+    userService.store(userModel);
+    userModel.add(linkTo(methodOn(UserController.class).show(userModel.getId())).withSelfRel());
     return ResponseEntity.status(HttpStatus.OK).body(userModel);
+  }
+
+  @DeleteMapping("/{id}")
+  public ResponseEntity<?> delete(@PathVariable UUID id) {
+    Optional<UserModel> userModelOptional = userService.show(id);
+    if (userModelOptional.isEmpty()) {
+      return ResponseEntity.status(HttpStatus.NOT_FOUND)
+          .body(String.format("User with id %s not found!", id));
+    }
+    userService.delete(userModelOptional.get());
+    return ResponseEntity.status(HttpStatus.OK)
+        .body(String.format("User with id %s deleted successfully", id));
   }
 }
