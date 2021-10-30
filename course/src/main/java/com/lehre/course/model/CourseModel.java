@@ -11,6 +11,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -28,12 +29,12 @@ import java.util.UUID;
 @Setter
 @Table(name = "tb_courses")
 @ToString
-public class CourseModel implements Serializable {
+public class CourseModel extends RepresentationModel<CourseModel> implements Serializable {
   public static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID id;
+  private UUID courseId;
 
   @Column(nullable = false)
   private String name;
@@ -74,11 +75,11 @@ public class CourseModel implements Serializable {
     if (this == object) return true;
     if (object == null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
     CourseModel courseModel = (CourseModel) object;
-    return id != null && Objects.equals(id, courseModel.id);
+    return courseId != null && Objects.equals(courseId, courseModel.courseId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(courseId);
   }
 }

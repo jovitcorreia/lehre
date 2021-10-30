@@ -31,7 +31,7 @@ public class ModuleModel implements Serializable {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID id;
+  private UUID moduleId;
 
   @Column(nullable = false)
   private String title;
@@ -42,6 +42,7 @@ public class ModuleModel implements Serializable {
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm:ss")
   private LocalDateTime creationDate;
 
+  @JoinColumn(name = "course_id")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @ToString.Exclude
@@ -59,11 +60,11 @@ public class ModuleModel implements Serializable {
     if (this == object) return true;
     if (object == null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
     ModuleModel moduleModel = (ModuleModel) object;
-    return id != null && Objects.equals(id, moduleModel.id);
+    return moduleId != null && Objects.equals(moduleId, moduleModel.moduleId);
   }
 
   @Override
   public int hashCode() {
-    return Objects.hash(id);
+    return Objects.hash(moduleId);
   }
 }
