@@ -21,22 +21,17 @@ public class CourseServiceImpl implements CourseService {
   }
 
   @Override
-  public void store(CourseModel courseModel) {
+  public void save(CourseModel courseModel) {
     this.courseRepository.save(courseModel);
   }
 
   @Override
-  public Optional<CourseModel> find(UUID courseId) {
-    return this.courseRepository.findById(courseId);
-  }
-
-  @Override
-  public Page<CourseModel> index(Pageable pageable) {
+  public Page<CourseModel> findAll(Pageable pageable) {
     return this.courseRepository.findAll(pageable);
   }
 
   @Override
-  public Optional<CourseModel> show(UUID courseId) {
+  public Optional<CourseModel> findById(UUID courseId) {
     return this.courseRepository.findById(courseId);
   }
 

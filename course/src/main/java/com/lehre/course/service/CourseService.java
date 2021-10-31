@@ -8,13 +8,11 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface CourseService {
-  void store(CourseModel courseModel);
+  void save(CourseModel courseModel);
 
-  Optional<CourseModel> find(UUID courseId);
+  Page<CourseModel> findAll(Pageable pageable);
 
-  Page<CourseModel> index(Pageable pageable);
-
-  Optional<CourseModel> show(UUID courseId);
+  Optional<CourseModel> findById(UUID courseId);
 
   void delete(CourseModel courseModel);
 }

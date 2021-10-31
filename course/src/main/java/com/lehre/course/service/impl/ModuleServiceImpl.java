@@ -4,6 +4,9 @@ import com.lehre.course.model.ModuleModel;
 import com.lehre.course.repository.ModuleRepository;
 import com.lehre.course.service.ModuleService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -21,6 +24,11 @@ public class ModuleServiceImpl implements ModuleService {
   @Override
   public void save(ModuleModel moduleModel) {
     moduleRepository.save(moduleModel);
+  }
+
+  @Override
+  public Page<ModuleModel> findAll(Specification<ModuleModel> spec, Pageable pageable) {
+    return moduleRepository.findAll(spec, pageable);
   }
 
   @Override
