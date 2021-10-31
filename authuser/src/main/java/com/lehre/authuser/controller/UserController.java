@@ -81,7 +81,7 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body(userModel);
   }
 
-  @PutMapping("/{id}/password")
+  @PatchMapping("/{id}/password")
   public ResponseEntity<?> updatePassword(
       @PathVariable UUID id,
       @RequestBody
@@ -103,7 +103,7 @@ public class UserController {
     return ResponseEntity.status(HttpStatus.OK).body("Password updated successfully!");
   }
 
-  @PutMapping("/{id}/image")
+  @PatchMapping("/{id}/image")
   public ResponseEntity<?> updateImage(
       @PathVariable UUID id,
       @RequestBody

@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
@@ -19,5 +20,6 @@ public interface ModuleRepository
   @Query(
       value = "select * from tb_modules where course_id = :courseId and module_id = :moduleId",
       nativeQuery = true)
-  Optional<ModuleModel> findModuleIntoCourse(UUID courseId, UUID moduleId);
+  Optional<ModuleModel> findModuleIntoCourse(
+      @Param("courseId") UUID courseId, @Param("moduleId") UUID moduleId);
 }

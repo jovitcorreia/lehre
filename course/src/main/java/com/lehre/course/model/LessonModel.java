@@ -34,7 +34,6 @@ public class LessonModel implements Serializable {
   @Column(nullable = false)
   private String description;
 
-  @Column(nullable = false)
   private String videoUrl;
 
   @Column(nullable = false)
