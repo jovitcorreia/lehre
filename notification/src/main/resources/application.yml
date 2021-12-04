@@ -1,6 +1,5 @@
 server:
   port: 8089
-
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/notification
@@ -14,4 +13,6 @@ spring:
         jdbc:
           lob.non-contextual-creation: true
         show_sql: true
-
+  output:
+    ansi:
+      enabled: always
