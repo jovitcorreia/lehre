@@ -12,7 +12,9 @@ import java.lang.annotation.*;
 @Target({ElementType.METHOD, ElementType.FIELD})
 
 public @interface UsernameConstraint {
-  Class<?>[] groups() default {};
-  Class<? extends Payload>[] payload() default {};
-  String message() default "Invalid username!";
+    Class<?>[] groups() default {};
+
+    Class<? extends Payload>[] payload() default {};
+
+    String message() default "Invalid username!";
 }

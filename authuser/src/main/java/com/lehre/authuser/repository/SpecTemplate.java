@@ -1,6 +1,6 @@
 package com.lehre.authuser.spec;
 
-import com.lehre.authuser.model.UserModel;
+import com.lehre.authuser.domain.User;
 import net.kaczmarzyk.spring.data.jpa.domain.Equal;
 import net.kaczmarzyk.spring.data.jpa.domain.Like;
 import net.kaczmarzyk.spring.data.jpa.web.annotation.And;
@@ -15,5 +15,5 @@ public class SpecTemplate {
     @Spec(path = "username", spec = Like.class),
     @Spec(path = "fullName", spec = Like.class)
   })
-  public interface UserSpec extends Specification<UserModel> {}
+  public interface UserSpec extends Specification<User> {}
 }

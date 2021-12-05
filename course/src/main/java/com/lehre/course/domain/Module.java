@@ -1,15 +1,20 @@
-package com.lehre.course.model;
+package com.lehre.course.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Set;
 import java.util.UUID;
 
 @AllArgsConstructor
@@ -19,14 +24,14 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @RequiredArgsConstructor
 @Setter
-@Table(name = "tb_lessons")
+@Table(name = "tb_modules")
 @ToString
-public class LessonModel implements Serializable {
+public class ModuleModel implements Serializable {
   public static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID lessonId;
+  private UUID moduleId;
 
   @Column(nullable = false)
   private String title;
@@ -34,23 +39,32 @@ public class LessonModel implements Serializable {
   @Column(nullable = false)
   private String description;
 
-  private String videoUrl;
-
-  @Column(nullable = false)
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
   private LocalDateTime creationDate;
 
-  @JoinColumn(name = "module_id")
+  @JoinColumn(name = "course_id")
   @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
   @ManyToOne(fetch = FetchType.LAZY, optional = false)
   @ToString.Exclude
-  private ModuleModel module;
+  private Course course;
+
+  @Fetch(FetchMode.SUBSELECT)
+  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
+  @OneToMany(fetch = FetchType.LAZY, mappedBy = "module")
+  @ToString.Exclude
+  private Set<LessonModel> lessons;
 
   @Override
   public boolean equals(Object object) {
     if (this == object) return true;
     if (object == null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
-    LessonModel lessonModel = (LessonModel) object;
-    return lessonId != null && Objects.equals(lessonId, lessonModel.lessonId);
+    ModuleModel moduleModel = (ModuleModel) object;
+    return moduleId != null && Objects.equals(moduleId, moduleModel.moduleId);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(moduleId);
   }
 }

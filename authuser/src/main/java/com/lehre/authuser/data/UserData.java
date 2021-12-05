@@ -1,9 +1,9 @@
-package com.lehre.authuser.data;
+package com.lehre.authuser.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
-import lombok.Data;
 import com.lehre.authuser.validation.UsernameConstraint;
+import lombok.Data;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -12,50 +12,54 @@ import java.util.UUID;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserData {
-  private UUID id;
+public class UserDto {
+    private UUID id;
 
-  @JsonView(UserView.RegistrationPost.class)
-  @NotBlank(groups = UserView.RegistrationPost.class)
-  @Size(groups = UserView.RegistrationPost.class, min = 3, max = 32)
-  @UsernameConstraint(groups = UserData.UserView.RegistrationPost.class)
-  private String username;
+    @JsonView(UserView.RegistrationPost.class)
+    @NotBlank(groups = UserView.RegistrationPost.class)
+    @Size(groups = UserView.RegistrationPost.class, min = 3, max = 32)
+    @UsernameConstraint(groups = UserDto.UserView.RegistrationPost.class)
+    private String username;
 
-  @Email(groups = UserView.RegistrationPost.class)
-  @JsonView(UserView.RegistrationPost.class)
-  @NotBlank(groups = UserView.RegistrationPost.class)
-  private String email;
+    @Email(groups = UserView.RegistrationPost.class)
+    @JsonView(UserView.RegistrationPost.class)
+    @NotBlank(groups = UserView.RegistrationPost.class)
+    private String email;
 
-  @JsonView({UserView.RegistrationPost.class, UserView.PasswordPut.class})
-  @NotBlank(groups = {UserView.RegistrationPost.class, UserView.PasswordPut.class})
-  private String password;
+    @JsonView({UserView.RegistrationPost.class, UserView.PasswordPut.class})
+    @NotBlank(groups = {UserView.RegistrationPost.class, UserView.PasswordPut.class})
+    private String password;
 
-  @JsonView(UserView.PasswordPut.class)
-  @NotBlank(groups = UserView.PasswordPut.class)
-  private String oldPassword;
+    @JsonView(UserView.PasswordPut.class)
+    @NotBlank(groups = UserView.PasswordPut.class)
+    private String oldPassword;
 
-  @JsonView({UserView.RegistrationPost.class, UserView.GenericPut.class})
-  private String fullName;
+    @JsonView({UserView.RegistrationPost.class, UserView.UpdatePut.class})
+    private String fullName;
 
-  @JsonView({UserView.RegistrationPost.class, UserView.GenericPut.class})
-  @Size(groups = {UserView.RegistrationPost.class, UserView.GenericPut.class}, max = 32)
-  private String phoneNumber;
+    @JsonView({UserView.RegistrationPost.class, UserView.UpdatePut.class})
+    @Size(groups = {UserView.RegistrationPost.class, UserView.UpdatePut.class}, max = 32)
+    private String phoneNumber;
 
-  @JsonView({UserView.RegistrationPost.class, UserView.GenericPut.class})
-  @Size(groups = {UserView.RegistrationPost.class, UserView.GenericPut.class}, max = 32)
-  private String cpf;
+    @JsonView({UserView.RegistrationPost.class, UserView.UpdatePut.class})
+    @Size(groups = {UserView.RegistrationPost.class, UserView.UpdatePut.class}, max = 32)
+    private String cpf;
 
-  @NotBlank(groups = UserView.ImagePut.class)
-  @JsonView(UserView.ImagePut.class)
-  private String imageUrl;
+    @NotBlank(groups = UserView.ImagePut.class)
+    @JsonView(UserView.ImagePut.class)
+    private String imageUrl;
 
-  public interface UserView {
-    interface RegistrationPost {}
+    public interface UserView {
+        interface RegistrationPost {
+        }
 
-    interface GenericPut {}
+        interface UpdatePut {
+        }
 
-    interface PasswordPut {}
+        interface PasswordPut {
+        }
 
-    interface ImagePut {}
-  }
+        interface ImagePut {
+        }
+    }
 }

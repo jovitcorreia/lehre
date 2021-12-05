@@ -1,8 +1,8 @@
-package com.lehre.course.data;
+package com.lehre.course.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.lehre.course.constant.CourseLevel;
-import com.lehre.course.constant.CourseStatus;
+import com.lehre.course.domain.CourseLevel;
+import com.lehre.course.domain.CourseStatus;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;
@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class CourseData {
+public class CourseDto {
   @NotBlank
   private String name;
   @NotBlank
