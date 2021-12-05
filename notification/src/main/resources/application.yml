@@ -16,3 +16,6 @@ spring:
   output:
     ansi:
       enabled: always
+logging:
+  level:
+    com.lehre: TRACE
