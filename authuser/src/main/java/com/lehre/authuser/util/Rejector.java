@@ -9,7 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @UtilityClass
-public class Rejecter {
+public class Rejector {
     public static String[] rejectNullValues(Object source) {
         final BeanWrapper target = new BeanWrapperImpl(source);
         PropertyDescriptor[] descriptors = target.getPropertyDescriptors();
