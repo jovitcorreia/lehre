@@ -1,8 +1,8 @@
-package com.lehre.authuser.dto;
+package com.lehre.authuser.data;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
-import com.lehre.authuser.validation.UsernameConstraint;
+import com.lehre.authuser.data.validation.UsernameConstraint;
 import lombok.Data;
 
 import javax.validation.constraints.Email;
@@ -12,13 +12,13 @@ import java.util.UUID;
 
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class UserDto {
+public class UserData {
     private UUID id;
 
     @JsonView(UserView.RegistrationPost.class)
     @NotBlank(groups = UserView.RegistrationPost.class)
     @Size(groups = UserView.RegistrationPost.class, min = 3, max = 32)
-    @UsernameConstraint(groups = UserDto.UserView.RegistrationPost.class)
+    @UsernameConstraint(groups = UserData.UserView.RegistrationPost.class)
     private String username;
 
     @Email(groups = UserView.RegistrationPost.class)

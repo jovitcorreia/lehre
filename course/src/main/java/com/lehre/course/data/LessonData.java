@@ -8,6 +8,8 @@ import javax.validation.constraints.NotBlank;
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class LessonData {
-  @NotBlank private String title;
-  @NotBlank private String description;
+    @NotBlank
+    private String title;
+    @NotBlank
+    private String description;
 }

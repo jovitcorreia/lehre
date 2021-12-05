@@ -1,6 +1,6 @@
-package com.lehre.authuser.validation.impl;
+package com.lehre.authuser.data.validation.impl;
 
-import com.lehre.authuser.validation.UsernameConstraint;
+import com.lehre.authuser.data.validation.UsernameConstraint;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;

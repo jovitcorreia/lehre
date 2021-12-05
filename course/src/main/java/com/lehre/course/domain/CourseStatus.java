@@ -1,6 +1,6 @@
-package com.lehre.course.constant;
+package com.lehre.course.domain;
 
 public enum CourseStatus {
-  IN_PROGRESS,
-  CONCLUDED
+    IN_PROGRESS,
+    CONCLUDED
 }

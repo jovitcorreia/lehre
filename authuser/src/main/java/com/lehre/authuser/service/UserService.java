@@ -1,6 +1,7 @@
 package com.lehre.authuser.service;
 
-import com.lehre.authuser.model.UserModel;
+import com.lehre.authuser.data.UserData;
+import com.lehre.authuser.domain.User;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -10,17 +11,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-  @Transactional
-  void store(UserModel userModel);
+    @Transactional
+    User create(UserData userData);
 
-  Optional<UserModel> show(UUID id);
+    Optional<User> find(UUID id);
 
-  Page<UserModel> index(Specification<UserModel> spec, Pageable pageable);
+    Page<User> list(Specification<User> spec, Pageable pageable);
 
-  @Transactional
-  void delete(UserModel userModel);
+    @Transactional
+    User update(UserData userData, User user);
 
-  boolean existsByEmail(String email);
+    @Transactional
+    void delete(User user);
 
-  boolean existsByUsername(String username);
+    boolean checkCpfUnavailability(String cpf);
+
+    boolean checkEmailUnavailability(String email);
+
+    boolean checkUsernameUnavailability(String username);
 }

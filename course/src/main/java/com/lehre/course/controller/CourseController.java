@@ -1,10 +1,8 @@
 package com.lehre.course.controller;
 
 import com.lehre.course.data.CourseData;
-import com.lehre.course.mapper.CourseMapper;
-import com.lehre.course.model.CourseModel;
+import com.lehre.course.domain.Course;
 import com.lehre.course.service.CourseService;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -25,73 +23,70 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/courses")
 @RestController
 public class CourseController {
-  private final CourseService courseService;
+    private static final String COURSE_NOT_FOUND = "Course with id %s not found!";
+    private final CourseService courseService;
 
-  @Autowired
-  public CourseController(CourseService courseService) {
-    this.courseService = courseService;
-  }
-
-  @PostMapping
-  public ResponseEntity<?> store(@RequestBody CourseData courseData) {
-    var courseModel = new CourseMapper().from(courseData);
-    courseService.save(courseModel);
-    courseModel.add(
-        linkTo(methodOn(CourseController.class).show(courseModel.getCourseId())).withSelfRel());
-    return ResponseEntity.status(HttpStatus.CREATED).body(courseModel);
-  }
-
-  @GetMapping("/{courseId}")
-  public ResponseEntity<?> show(@PathVariable UUID courseId) {
-    Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
-    if (courseModelOptional.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body(String.format("Course with id %s not found!", courseId));
+    @Autowired
+    public CourseController(CourseService courseService) {
+        this.courseService = courseService;
     }
-    CourseModel courseModel = courseModelOptional.get();
-    courseModel.add(
-        linkTo(methodOn(CourseController.class).show(courseModel.getCourseId())).withSelfRel());
-    return ResponseEntity.status(HttpStatus.OK).body(courseModel);
-  }
 
-  @GetMapping
-  public ResponseEntity<Page<CourseModel>> index(
-      @PageableDefault(sort = "creationDate", direction = Sort.Direction.ASC) Pageable pageable) {
-    Page<CourseModel> courseModelPage = courseService.findAll(pageable);
-    if (!courseModelPage.isEmpty()) {
-      for (CourseModel course : courseModelPage.toList()) {
-        course.add(linkTo(methodOn(CourseController.class).show(course.getCourseId())).withSelfRel());
-      }
+    @PostMapping
+    public ResponseEntity<Object> store(@RequestBody CourseData courseData) {
+        Course course = courseService.create(courseData);
+        course.add(
+            linkTo(methodOn(CourseController.class).show(course.getCourseId())).withSelfRel());
+        return ResponseEntity.status(HttpStatus.CREATED).body(course);
     }
-    return ResponseEntity.status(HttpStatus.OK).body(courseModelPage);
-  }
 
-  @PutMapping("/{courseId}")
-  public ResponseEntity<?> update(
-      @PathVariable UUID courseId, @RequestBody @Validated CourseData courseData) {
-    Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
-    if (courseModelOptional.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body(String.format("Course with id %s not found!", courseId));
+    @GetMapping("/{courseId}")
+    public ResponseEntity<Object> show(@PathVariable UUID courseId) {
+        Optional<Course> courseOptional = courseService.find(courseId);
+        if (courseOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(String.format(COURSE_NOT_FOUND, courseId));
+        }
+        Course course = courseOptional.get();
+        course.add(
+            linkTo(methodOn(CourseController.class).show(course.getCourseId())).withSelfRel());
+        return ResponseEntity.status(HttpStatus.OK).body(course);
     }
-    CourseModel courseModel = courseModelOptional.get();
-    BeanUtils.copyProperties(courseData, courseModel);
-    courseService.save(courseModel);
-    courseModel.add(
-        linkTo(methodOn(CourseController.class).show(courseModel.getCourseId())).withSelfRel());
-    return ResponseEntity.status(HttpStatus.OK).body(courseModel);
-  }
 
-  @DeleteMapping("/{courseId}")
-  public ResponseEntity<?> delete(@PathVariable UUID courseId) {
-    Optional<CourseModel> courseModelOptional = courseService.findById(courseId);
-    if (courseModelOptional.isEmpty()) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND)
-          .body(String.format("Course with id %s not found!", courseId));
+    @GetMapping
+    public ResponseEntity<Page<Course>> index(
+        @PageableDefault(sort = "creationDate", direction = Sort.Direction.ASC) Pageable pageable) {
+        Page<Course> coursePage = courseService.list(pageable);
+        if (!coursePage.isEmpty()) {
+            for (Course course : coursePage.toList()) {
+                course.add(linkTo(methodOn(CourseController.class).show(course.getCourseId())).withSelfRel());
+            }
+        }
+        return ResponseEntity.status(HttpStatus.OK).body(coursePage);
     }
-    CourseModel courseModel = courseModelOptional.get();
-    courseService.delete(courseModel);
-    return ResponseEntity.status(HttpStatus.OK)
-        .body(String.format("Course  with id %s deleted  successfully!", courseId));
-  }
+
+    @PutMapping("/{courseId}")
+    public ResponseEntity<Object> update(
+        @PathVariable UUID courseId, @RequestBody @Validated CourseData courseData) {
+        Optional<Course> courseOptional = courseService.find(courseId);
+        if (courseOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(String.format(COURSE_NOT_FOUND, courseId));
+        }
+        Course course = courseService.update(courseData, courseOptional.get());
+        course.add(
+            linkTo(methodOn(CourseController.class).show(course.getCourseId())).withSelfRel());
+        return ResponseEntity.status(HttpStatus.OK).body(course);
+    }
+
+    @DeleteMapping("/{courseId}")
+    public ResponseEntity<Object> delete(@PathVariable UUID courseId) {
+        Optional<Course> courseOptional = courseService.find(courseId);
+        if (courseOptional.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(String.format(COURSE_NOT_FOUND, courseId));
+        }
+        courseService.delete(courseOptional.get());
+        return ResponseEntity.status(HttpStatus.OK)
+            .body(String.format("Course  with id %s deleted  successfully!", courseId));
+    }
 }

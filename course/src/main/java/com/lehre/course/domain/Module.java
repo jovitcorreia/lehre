@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.Hibernate;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.OnDelete;
@@ -24,47 +23,52 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @RequiredArgsConstructor
 @Setter
-@Table(name = "tb_modules")
+@Table(name = "modules")
 @ToString
-public class ModuleModel implements Serializable {
-  public static final long serialVersionUID = 1L;
+public class Module implements Serializable {
+    public static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  private UUID moduleId;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID moduleId;
 
-  @Column(nullable = false)
-  private String title;
+    @Column(nullable = false)
+    private String title;
 
-  @Column(nullable = false)
-  private String description;
+    @Column(nullable = false)
+    private String description;
 
-  @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-  private LocalDateTime creationDate;
+    @JoinColumn(name = "course_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @ToString.Exclude
+    private Course courseId;
 
-  @JoinColumn(name = "course_id")
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @ToString.Exclude
-  private Course course;
+    @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime creationDate;
 
-  @Fetch(FetchMode.SUBSELECT)
-  @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-  @OnDelete(action = OnDeleteAction.CASCADE)
-  @OneToMany(fetch = FetchType.LAZY, mappedBy = "module")
-  @ToString.Exclude
-  private Set<LessonModel> lessons;
+    @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime lastUpdateDate;
 
-  @Override
-  public boolean equals(Object object) {
-    if (this == object) return true;
-    if (object == null || Hibernate.getClass(this) != Hibernate.getClass(object)) return false;
-    ModuleModel moduleModel = (ModuleModel) object;
-    return moduleId != null && Objects.equals(moduleId, moduleModel.moduleId);
-  }
+    @Fetch(FetchMode.SUBSELECT)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "moduleId")
+    @ToString.Exclude
+    private Set<Lesson> lessons;
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(moduleId);
-  }
+    @Override
+    public boolean equals(Object object) {
+        if (this == object) return true;
+        if (object == null || getClass() != object.getClass()) return false;
+        Module module = (Module) object;
+        return moduleId.equals(module.moduleId) && title.equals(module.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(moduleId, title);
+    }
 }

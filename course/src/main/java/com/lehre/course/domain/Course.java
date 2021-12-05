@@ -3,8 +3,6 @@ package com.lehre.course.domain;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.lehre.course.constant.CourseLevel;
-import com.lehre.course.constant.CourseStatus;
 import lombok.*;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
@@ -26,7 +24,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @RequiredArgsConstructor
 @Setter
-@Table(name = "course")
+@Table(name = "courses")
 @ToString
 public class Course extends RepresentationModel<Course> implements Serializable {
     public static final long serialVersionUID = 1L;
@@ -44,14 +42,6 @@ public class Course extends RepresentationModel<Course> implements Serializable 
     private String imageUrl;
 
     @Column(nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDateTime creationDate;
-
-    @Column(nullable = false)
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
-    private LocalDateTime lastUpdateDate;
-
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private CourseStatus status;
 
@@ -67,7 +57,15 @@ public class Course extends RepresentationModel<Course> implements Serializable 
     @OnDelete(action = OnDeleteAction.CASCADE)
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "courseId")
     @ToString.Exclude
-    private Set<ModuleModel> modules;
+    private Set<Module> modules;
+
+    @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime creationDate;
+
+    @Column(nullable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'")
+    private LocalDateTime lastUpdateDate;
 
     @Override
     public boolean equals(Object object) {

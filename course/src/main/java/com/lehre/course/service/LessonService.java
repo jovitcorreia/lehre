@@ -1,19 +1,27 @@
 package com.lehre.course.service;
 
-import com.lehre.course.model.LessonModel;
+import com.lehre.course.data.LessonData;
+import com.lehre.course.domain.Lesson;
+import com.lehre.course.domain.Module;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface LessonService {
-  void save(LessonModel lessonModel);
+    @Transactional
+    Lesson create(Module module, LessonData lessonData);
 
-  Page<LessonModel> findAll(Specification<LessonModel> spec, Pageable pageable);
+    Optional<Lesson> findLessonIntoModule(UUID moduleId, UUID courseId);
 
-  Optional<LessonModel> findLessonIntoModule(UUID moduleId, UUID courseId);
+    Page<Lesson> list(Specification<Lesson> spec, Pageable pageable);
 
-  void delete(LessonModel lessonModel);
+    @Transactional
+    Lesson update(LessonData lessonData, Lesson lesson);
+
+    @Transactional
+    void delete(Lesson lesson);
 }

@@ -1,7 +1,7 @@
-package com.lehre.course.constant;
+package com.lehre.course.domain;
 
 public enum CourseLevel {
-  BEGINNER,
-  INTERMEDIARY,
-  ADVANCED
+    BEGINNER,
+    INTERMEDIARY,
+    ADVANCED
 }
