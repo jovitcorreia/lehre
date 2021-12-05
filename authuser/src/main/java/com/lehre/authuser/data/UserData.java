@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lehre.authuser.data.validation.UsernameConstraint;
 import lombok.Data;
+import lombok.ToString;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -28,10 +29,12 @@ public class UserData {
 
     @JsonView({UserView.RegistrationPost.class, UserView.PasswordPut.class})
     @NotBlank(groups = {UserView.RegistrationPost.class, UserView.PasswordPut.class})
+    @ToString.Exclude
     private String password;
 
     @JsonView(UserView.PasswordPut.class)
     @NotBlank(groups = UserView.PasswordPut.class)
+    @ToString.Exclude
     private String oldPassword;
 
     @JsonView({UserView.RegistrationPost.class, UserView.UpdatePut.class})

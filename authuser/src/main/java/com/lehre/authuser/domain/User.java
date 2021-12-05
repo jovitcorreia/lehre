@@ -36,6 +36,7 @@ public class User extends RepresentationModel<User> implements Serializable {
 
     @Column(nullable = false)
     @JsonIgnore
+    @ToString.Exclude
     private String password;
 
     @Column(nullable = false)
