@@ -3,6 +3,7 @@ package com.lehre.course.controller;
 import com.lehre.course.data.CourseData;
 import com.lehre.course.domain.Course;
 import com.lehre.course.service.CourseService;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,10 +21,11 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
+@Log4j2
 @RequestMapping("/courses")
 @RestController
 public class CourseController {
-    private static final String COURSE_NOT_FOUND = "Course with id %s not found!";
+    private static final String COURSE_NOT_FOUND = "Course with id %s not found";
     private final CourseService courseService;
 
     @Autowired
@@ -33,7 +35,9 @@ public class CourseController {
 
     @PostMapping
     public ResponseEntity<Object> store(@RequestBody CourseData courseData) {
+        log.debug("POST store courseData {}", courseData.toString());
         Course course = courseService.create(courseData);
+        log.info("Course created successfully with id {}", course.getCourseId());
         course.add(
             linkTo(methodOn(CourseController.class).show(course.getCourseId())).withSelfRel());
         return ResponseEntity.status(HttpStatus.CREATED).body(course);
@@ -67,12 +71,14 @@ public class CourseController {
     @PutMapping("/{courseId}")
     public ResponseEntity<Object> update(
         @PathVariable UUID courseId, @RequestBody @Validated CourseData courseData) {
+        log.debug("PUT update courseData {}", courseData.toString());
         Optional<Course> courseOptional = courseService.find(courseId);
         if (courseOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format(COURSE_NOT_FOUND, courseId));
         }
         Course course = courseService.update(courseData, courseOptional.get());
+        log.info("Course with id {} updated successfully", course.getCourseId());
         course.add(
             linkTo(methodOn(CourseController.class).show(course.getCourseId())).withSelfRel());
         return ResponseEntity.status(HttpStatus.OK).body(course);
@@ -80,13 +86,15 @@ public class CourseController {
 
     @DeleteMapping("/{courseId}")
     public ResponseEntity<Object> delete(@PathVariable UUID courseId) {
+        log.debug("DELETE delete course with id {}", courseId);
         Optional<Course> courseOptional = courseService.find(courseId);
         if (courseOptional.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(String.format(COURSE_NOT_FOUND, courseId));
         }
         courseService.delete(courseOptional.get());
+        log.info("Course  with id {} deleted successfully", courseId);
         return ResponseEntity.status(HttpStatus.OK)
-            .body(String.format("Course  with id %s deleted  successfully!", courseId));
+            .body(String.format("Course  with id %s deleted  successfully", courseId));
     }
 }
