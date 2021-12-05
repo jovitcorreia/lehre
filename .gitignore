@@ -1,7 +1,7 @@
-**/.iml
 *.class
 *.ctxt
 *.ear
+*.iml
 *.jar
 *.log
 *.nar
