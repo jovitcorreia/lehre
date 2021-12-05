@@ -10,15 +10,15 @@ import java.time.format.DateTimeFormatter;
 
 // @Configuration
 public class DateTimeConfig {
-  private static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-  public static LocalDateTimeSerializer LOCAL_DATETIME_SERIALIZER =
-      new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATETIME_FORMAT));
+    private static final String DATETIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+    public static final LocalDateTimeSerializer LOCAL_DATETIME_SERIALIZER =
+        new LocalDateTimeSerializer(DateTimeFormatter.ofPattern(DATETIME_FORMAT));
 
-  @Bean
-  @Primary
-  public ObjectMapper objectMapper() {
-    var module = new JavaTimeModule();
-    module.addSerializer(LOCAL_DATETIME_SERIALIZER);
-    return new ObjectMapper().registerModule(module);
-  }
+    @Bean
+    @Primary
+    public ObjectMapper objectMapper() {
+        var module = new JavaTimeModule();
+        module.addSerializer(LOCAL_DATETIME_SERIALIZER);
+        return new ObjectMapper().registerModule(module);
+    }
 }
